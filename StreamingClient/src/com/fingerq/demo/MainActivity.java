@@ -10,7 +10,7 @@ import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.media.AudioFormat;
 
-import com.fingerq.streaming.StreamingClient;
+import com.fingerq.net.StreamingClient;
 
 public class MainActivity extends Activity implements StreamingClient.AVFrameCallback {
 	static private final int PREVIEW_WIDTH = 640;

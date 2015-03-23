@@ -1,4 +1,4 @@
-package com.fingerq.streaming;
+package com.fingerq.net;
 
 import java.nio.channels.SocketChannel;
 import java.net.InetSocketAddress;

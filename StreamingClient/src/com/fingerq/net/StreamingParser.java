@@ -1,4 +1,4 @@
-package com.fingerq.streaming;
+package com.fingerq.net;
 
 import java.nio.ByteBuffer;
 import android.graphics.Bitmap;
@@ -98,7 +98,7 @@ final class StreamingParser {
 	}
 
 	public void parse(ByteBuffer byteBuffer, int width, int height, int [] out_video_buffer, byte [] out_audio_buffer) {
-		int position = byteBuffer.position(); //this is buffer size and zero base
+		int position = byteBuffer.position();
 		byte [] buffer = byteBuffer.array();
 
 		if (position >= 7) {
@@ -108,19 +108,19 @@ final class StreamingParser {
 			int size = ((buffer[3] & 0xff) | ((buffer[4] << 8) & 0x0000ff00) | ((buffer[5] << 16) & 0x00ff0000) | ((buffer[6] << 24) & 0xff000000));
 
 			if (mag1 == 0x19 && mag2 == 0x79 && video_or_audio == (byte)1) { // video
-				if (position - 8 >= size) {
+				if (position - 7 >= size) {
 					byteBuffer.flip();
-					byteBuffer.get(_header); // discard 8 bytes header
-					byteBuffer.get(_buffer, 0, size); // read real video data
+					byteBuffer.get(_header);
+					byteBuffer.get(_buffer, 0, size);
 					byteBuffer.compact();
 					_videoDecoder._queue.offer(Arrays.copyOf(_buffer, size));
 				}
 			}
 			else if (mag1 == (byte)0x19 && mag2 == (byte)0x79 && video_or_audio == (byte)2) { // audio
-				if (position - 8 >= size) {
+				if (position - 7 >= size) {
 					byteBuffer.flip();
-					byteBuffer.get(_header); // discard 8 bytes header
-					byteBuffer.get(_buffer, 0, size); // read real audio data
+					byteBuffer.get(_header);
+					byteBuffer.get(_buffer, 0, size);
 					byteBuffer.compact();
 					_audioDecoder._queue.offer(Arrays.copyOf(_buffer, size));
 				}
@@ -128,5 +128,3 @@ final class StreamingParser {
 		}
 	}
 }
-
-
