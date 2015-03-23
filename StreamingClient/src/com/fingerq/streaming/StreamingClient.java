@@ -30,7 +30,7 @@ final public class StreamingClient implements Runnable {
 	public void run() {
 		try {
 			int [] out_video_buffer = new int [_image_width * _image_height];
-			byte [] out_audio_buffer = new byte [1024 * 1024];
+			byte [] out_audio_buffer = new byte [2048];
 
 			if (false == Codec.nativeVideoDecoderInit(_image_width, _image_height))
 				return;

@@ -13,10 +13,14 @@ import android.media.AudioFormat;
 import com.fingerq.streaming.StreamingClient;
 
 public class MainActivity extends Activity implements StreamingClient.AVFrameCallback {
+	static private final int PREVIEW_WIDTH = 640;
+	static private final int PREVIEW_HEIGHT = 480;
+	static private final int SERVER_PORT = 5557;
+	static final private String SERVER_IP = "192.168.0.209";
+
 	private StreamingClient _streaming_client;
 	private ImageView _videoImageView;
 	private AudioTrack _audioTrack;
-	static final private String SERVER_IP = "192.168.0.209";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -25,14 +29,15 @@ public class MainActivity extends Activity implements StreamingClient.AVFrameCal
 		setContentView(R.layout.main);
 		_videoImageView = (ImageView) findViewById(R.id.VideoImage);
 
-		_streaming_client = new StreamingClient(640, 480);
+		_streaming_client = new StreamingClient(PREVIEW_WIDTH, PREVIEW_HEIGHT);
 
 		_audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, 8000, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT, 2048, AudioTrack.MODE_STREAM);
 		_audioTrack.play();
 
-		_streaming_client.start(SERVER_IP, 5557, this);
+		_streaming_client.start(SERVER_IP, SERVER_PORT, this);
 	}
 
+	@Override
 	protected void onPause() {
 		super.onPause();
 
@@ -40,6 +45,7 @@ public class MainActivity extends Activity implements StreamingClient.AVFrameCal
 		_streaming_client.stop();
 	}
 
+	@Override
 	public void onVideoFrame(final Bitmap bitmap) {
 		this.runOnUiThread(new Runnable() {
 			public void run() {
@@ -48,6 +54,7 @@ public class MainActivity extends Activity implements StreamingClient.AVFrameCal
 		});
 	}
 
+	@Override
 	public void onAudioFrame(final byte [] pcm_data, int size) {
 		_audioTrack.write(pcm_data, 0, size);
 	}
