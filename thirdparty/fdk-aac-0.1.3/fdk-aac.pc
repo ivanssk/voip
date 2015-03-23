@@ -1,0 +1,11 @@
+prefix=/Users/ivanshih/source/H264/thirdparty/fdk-aac-0.1.3/../../Codec/jni/fdkaac
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: Fraunhofer FDK AAC Codec Library
+Description: AAC codec library
+Version: 0.1.3
+Libs: -L${libdir} -lfdk-aac -lm 
+Libs.private: 
+Cflags: -I${includedir}

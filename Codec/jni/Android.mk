@@ -1,0 +1,67 @@
+LOCAL_PATH := $(call my-dir)
+
+X264_INCLUDE=$(LOCAL_PATH)/x264/include
+X264_LIB=x264/lib
+
+FFMPEG_INCLUDE=$(LOCAL_PATH)/ffmpeg/include
+FFMPEG_LIB=ffmpeg/lib
+
+AAC_INCLUDE=$(LOCAL_PATH)/fdkaac/include
+AAC_LIB=fdkaac/lib
+
+include $(CLEAR_VARS)
+LOCAL_MODULE:= libAAC
+LOCAL_SRC_FILES:= $(AAC_LIB)/libfdk-aac.a
+LOCAL_EXPORT_C_INCLUDES := $(AAC_INCLUDE)
+include $(PREBUILT_STATIC_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE:= libx264
+LOCAL_SRC_FILES:= $(X264_LIB)/libx264.a
+LOCAL_EXPORT_C_INCLUDES := $(X264_INCLUDE)
+LOCAL_STATIC_LIBRARIES += libAAC
+include $(PREBUILT_STATIC_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE:= libavutil
+LOCAL_SRC_FILES:= $(FFMPEG_LIB)/libavutil.a
+LOCAL_EXPORT_C_INCLUDES := $(FFMPEG_INCLUDE)
+include $(PREBUILT_STATIC_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE:= libswscale
+LOCAL_SRC_FILES:= $(FFMPEG_LIB)/libswscale.a
+LOCAL_EXPORT_C_INCLUDES := $(FFMPEG_INCLUDE)
+LOCAL_STATIC_LIBRARIES += libavutil
+include $(PREBUILT_STATIC_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE:= libavcodec
+LOCAL_SRC_FILES:= $(FFMPEG_LIB)/libavcodec.a
+LOCAL_EXPORT_C_INCLUDES := $(FFMPEG_INCLUDE)
+LOCAL_STATIC_LIBRARIES := libswresample libx264
+include $(PREBUILT_STATIC_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE:= libswresample
+LOCAL_SRC_FILES:= $(FFMPEG_LIB)/libswresample.a
+LOCAL_EXPORT_C_INCLUDES := $(FFMPEG_INCLUDE)
+include $(PREBUILT_STATIC_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE:= libavformat
+LOCAL_SRC_FILES:= $(FFMPEG_LIB)/libavformat.a
+LOCAL_EXPORT_C_INCLUDES := $(FFMPEG_INCLUDE)
+LOCAL_STATIC_LIBRARIES += libavcodec
+include $(PREBUILT_STATIC_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE    := FingerQCodec
+LOCAL_SRC_FILES := jni_main.cpp Codec.cpp VideoDecoderImpl.cpp VideoEncoderImpl.cpp AudioEncoderImpl.cpp AudioDecoderImpl.cpp
+LOCAL_EXPORT_C_INCLUDES := $(FFMPEG_INCLUDE)
+LOCAL_LDLIBS := -L$(LOCAL_PATH) -llog -ljnigraphics -lm -lz
+LOCAL_CFLAGS := -D__STDC_CONSTANT_MACROS
+LOCAL_STATIC_LIBRARIES := libavformat libswscale
+include $(BUILD_SHARED_LIBRARY)
+
+#$(call import-module,ffmpeg/android/arm)

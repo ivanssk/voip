@@ -1,0 +1,13 @@
+bin/
+gen/
+obj/
+libs/
+*.out
+cscope.files
+local.properties
+.classpath
+.project
+.settings/
+.ant-targets-build.xml
+*.gz
+proguard-project.txt
