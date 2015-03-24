@@ -47,7 +47,6 @@ final public class AudioProvider extends AVProvider {
 			_worker.join();
 		}
 		catch (Exception e) {
-			Assert.fail(e.getMessage());
 		}
 	}
 }
