@@ -6,8 +6,8 @@ import java.nio.ByteBuffer;
 final public class Packet {
 	static protected byte MAG1 = (byte)0x19;
 	static protected byte MAG2 = (byte)0x79;
-	static public byte VIDEO = 0x1;
-	static public byte AUDIO = 0x2;
+	static public byte VIDEO = 0x0;
+	static public byte AUDIO = 0x1;
 
 	private Packet() {
 	}
