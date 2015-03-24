@@ -28,14 +28,10 @@ final class TransmissibleState implements State {
 
 	public boolean handle(StateContext stateContext, Object o) {
 		try {
-			while (true) {
-				Buffer buffer = _queue.poll(10L, TimeUnit.MILLISECONDS);
-
-				if (buffer == null)
-					return true;
-
+			for (Buffer buffer = _queue.poll(10L, TimeUnit.MILLISECONDS); buffer != null; buffer = _queue.poll(10L, TimeUnit.MILLISECONDS))
 				_socketChannel.write((ByteBuffer)buffer);
-			}
+
+			return _serverSocketChannel.isOpen();
 		}
 		catch (InterruptedException e) {
 			return true;
