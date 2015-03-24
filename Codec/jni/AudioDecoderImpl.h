@@ -9,9 +9,7 @@ public:
 
 protected:
 	AVCodec* getAudioCodec() {
-		return avcodec_find_decoder(AV_CODEC_ID_AAC);
-		//return avcodec_find_decoder_by_name("libfdk_aac");
-		//return avcodec_find_decoder_by_name("aac");
+		return avcodec_find_decoder_by_name("libfdk_aac");
 	}
 };
 
